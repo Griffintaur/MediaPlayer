@@ -1,0 +1,5 @@
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerModels\bin\Debug\MediaPlayerModels.dll
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerModels\bin\Debug\MediaPlayerModels.pdb
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerModels\obj\Debug\MediaPlayerModels.csprojResolveAssemblyReference.cache
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerModels\obj\Debug\MediaPlayerModels.dll
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerModels\obj\Debug\MediaPlayerModels.pdb
