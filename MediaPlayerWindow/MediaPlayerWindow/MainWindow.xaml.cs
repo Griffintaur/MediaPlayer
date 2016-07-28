@@ -43,19 +43,29 @@ namespace MediaPlayerWindow
                 PlayMethodView();
             };
 
+            _mediaPlayerViewModel.VolumeDownEvent += (sender, e) =>
+            {if(this.MediaPlayerElement.Volume>0)
+                this.MediaPlayerElement.Volume -= 0.1;
+            };
+            _mediaPlayerViewModel.VolumeUpEvent += (sender, e) =>
+            {
+                if (this.MediaPlayerElement.Volume < 1)
+                    this.MediaPlayerElement.Volume += 0.1;
+            };
+            
             _mediaPlayerViewModel.MoveForwardRequested += (sender,e) =>
             {
                 if (this.PlayListView.SelectedIndex < PlayListView.Items.Count)
                 {
-                    this.PlayListView.SelectedIndex ++;
+                    this.PlayListView.SelectedIndex = (this.PlayListView.SelectedIndex + 1) % this.PlayListView.Items.Count; ;
                     _mediaPlayerViewModel.OnItemSelectedInPlayListCommand.Execute(this.PlayListView.SelectedValue);
                 }
             };
             _mediaPlayerViewModel.MoveBackwardRequested += (sender, e) =>
             {
-                if (this.PlayListView.SelectedIndex < PlayListView.Items.Count && this.PlayListView.SelectedIndex >0)
+                if (this.PlayListView.SelectedIndex < PlayListView.Items.Count )
                 {
-                    this.PlayListView.SelectedIndex--;
+                    this.PlayListView.SelectedIndex = (this.PlayListView.SelectedIndex - 1 + this.PlayListView.Items.Count) % this.PlayListView.Items.Count;
                     _mediaPlayerViewModel.OnItemSelectedInPlayListCommand.Execute(this.PlayListView.SelectedValue);
                 }
             };
@@ -88,7 +98,7 @@ namespace MediaPlayerWindow
                             
                 if(this.MediaPlayerElement.IsLoaded)
                 {
-                    TotalTime = MediaPlayerElement.NaturalDuration.TimeSpan;
+                   
 
                     // Create a timer that will update the counters and the time slider
                      timerVideoTime = new DispatcherTimer();
@@ -116,7 +126,8 @@ namespace MediaPlayerWindow
         private void PlayMethodView()
         {
             this.PlayButton.IsEnabled = true;
-           this.Title = this.MediaPlayerElement.Source.ToString();
+            string[] splittedStrings = this.MediaPlayerElement.Source.ToString().Split('/');
+           this.Title = splittedStrings[splittedStrings.Length-1];
                 if (this.PlayButton.Content==FindResource("PlayImage"))
                 {
                     this.MediaPlayerElement.Play();
@@ -137,8 +148,9 @@ namespace MediaPlayerWindow
             // Check if the movie finished calculate it's total time
             if (this.MediaPlayerElement.NaturalDuration.HasTimeSpan)
             {
-                this.TimeToComplete.Content = this.MediaPlayerElement.NaturalDuration;
-                this.Timer.Content = this.MediaPlayerElement.Position;
+                TotalTime = MediaPlayerElement.NaturalDuration.TimeSpan;
+                this.TimeToComplete.Content = this.MediaPlayerElement.NaturalDuration.TimeSpan.ToString(@"hh\:mm\:ss");
+                this.Timer.Content = this.MediaPlayerElement.Position.ToString(@"hh\:mm\:ss");
                 if (this.MediaPlayerElement.NaturalDuration.TimeSpan.TotalSeconds > 0)
                 {
                     if (this.TotalTime.TotalSeconds > 0)
@@ -160,6 +172,14 @@ namespace MediaPlayerWindow
         {
             _mediaPlayerViewModel.MediaOpened = true;
 
+        }
+
+        private void MediaPlayerElement_OnMediaEnded(object sender, RoutedEventArgs e)
+        {
+            if (this.PlayListView.SelectedIndex != -1)
+            {
+                this.PlayListView.SelectedIndex = (this.PlayListView.SelectedIndex+1) % this.PlayListView.Items.Count;
+            }
         }
     }
 }

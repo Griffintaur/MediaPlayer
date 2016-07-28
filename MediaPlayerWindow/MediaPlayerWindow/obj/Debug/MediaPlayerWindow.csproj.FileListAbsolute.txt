@@ -29,3 +29,5 @@ C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\Media
 C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerWindow\bin\Debug\ru\System.Windows.Interactivity.resources.dll
 C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerWindow\bin\Debug\zh-Hans\System.Windows.Interactivity.resources.dll
 C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerWindow\bin\Debug\zh-Hant\System.Windows.Interactivity.resources.dll
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerWindow\obj\Debug\Albums.baml
+C:\Users\310247467\Documents\Visual Studio 2013\Projects\MediaPlayerWindow\MediaPlayerWindow\obj\Debug\Albums.g.cs

@@ -53,7 +53,8 @@ namespace MediaPlayerViewModel
         public event EventHandler MoveForwardRequested;
         public event EventHandler MoveBackwardRequested;
         public event EventHandler MediaOpenedRequested;
-
+        public event EventHandler VolumeUpEvent;
+        public event EventHandler VolumeDownEvent;
 
         public ObservableCollection<ObservableCollection<Uri>> AlbumsViewCollection
         {
@@ -105,6 +106,15 @@ namespace MediaPlayerViewModel
             get { return new DelegateCommand(PlayMediaFileMethod,IsValid);}
         }
 
+        public ICommand VolumeUpCommand
+        {
+           get { return new DelegateCommand(VolumeUpMethod,IsValid);}
+        }
+
+        public ICommand VolumeDownCommand
+        {
+            get { return new DelegateCommand(VolumeDownMethod,IsValid);}
+        }
         public ICommand PlayListCommand
         {
             get { return new DelegateCommand(PlayListMethod,IsValid);}
@@ -169,6 +179,21 @@ namespace MediaPlayerViewModel
             }
         }
 
+        protected virtual void OnVolumeUpEvent()
+        {
+            if (VolumeUpEvent != null)
+            {
+                this.VolumeUpEvent(this,new EventArgs());
+            }
+        }
+
+        protected virtual void OnVolumeDownEvent()
+        {
+            if (VolumeDownEvent != null)
+            {
+                this.VolumeDownEvent(this,new EventArgs());
+            }
+        }
         protected virtual void OnMediaOpenedRequested()
         {
             if (MediaOpenedRequested != null)
@@ -219,6 +244,16 @@ namespace MediaPlayerViewModel
 
        }
 
+        private void VolumeUpMethod(object o)
+        {
+            OnVolumeUpEvent();
+        }
+
+        private void VolumeDownMethod(Object o)
+        {
+            OnVolumeDownEvent();
+        }
+
         private void MediaOpenedMethod(Object obj)
         {
             MediaOpened = true;
@@ -228,6 +263,7 @@ namespace MediaPlayerViewModel
            
             XmlSerializer _xmlSerializer = new XmlSerializer(typeof(PlayListDirectory));
             SaveFileDialog _playListSaveDialog=new SaveFileDialog();
+            _playListSaveDialog.Title = "Save PlayList";
             if (_playListSaveDialog.ShowDialog() == DialogResult.OK)
             {
                 string filename = _playListSaveDialog.FileName;
@@ -258,6 +294,7 @@ namespace MediaPlayerViewModel
             playListViewCollection.Clear();
             XmlSerializer _xmlDeSerializer=new XmlSerializer(typeof(PlayListDirectory));
             OpenFileDialog _playListOpenFileDialog=new OpenFileDialog();
+            _playListOpenFileDialog.Title = "Open PlayList";
             if (_playListOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string filename = _playListOpenFileDialog.FileName;
