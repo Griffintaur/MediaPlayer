@@ -1,0 +1,9 @@
+﻿<Window x:Class="MediaPlayerWindow.Albums"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Albums" Height="300" Width="300">
+    <Grid>
+        <DataGrid HorizontalAlignment="Left" Margin="36,33,0,0" VerticalAlignment="Top" Height="196" Width="229"/>
+
+    </Grid>
+</Window>
