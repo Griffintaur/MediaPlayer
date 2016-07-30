@@ -52,10 +52,19 @@ namespace MediaPlayerWindow
                 if (this.MediaPlayerElement.Volume < 1)
                     this.MediaPlayerElement.Volume += 0.1;
             };
-            
+            _mediaPlayerViewModel.SpeedRatioUpEvent += (sender, e) =>
+            {
+                this.MediaPlayerElement.SpeedRatio += 0.25;
+                MessageBox.Show(this.MediaPlayerElement.SpeedRatio.ToString(),"Speed Ratio");
+            };
+            _mediaPlayerViewModel.SpeedRatioDownEvent += (sender, e) =>
+            {
+                this.MediaPlayerElement.SpeedRatio -= 0.15;
+                MessageBox.Show(this.MediaPlayerElement.SpeedRatio.ToString(), "Speed Ratio");
+            };
             _mediaPlayerViewModel.MoveForwardRequested += (sender,e) =>
             {
-                if (this.PlayListView.SelectedIndex < PlayListView.Items.Count)
+                if (this.PlayListView.SelectedIndex < PlayListView.Items.Count && PlayListView.Items.Count>0)
                 {
                     this.PlayListView.SelectedIndex = (this.PlayListView.SelectedIndex + 1) % this.PlayListView.Items.Count; ;
                     _mediaPlayerViewModel.OnItemSelectedInPlayListCommand.Execute(this.PlayListView.SelectedValue);
@@ -63,7 +72,7 @@ namespace MediaPlayerWindow
             };
             _mediaPlayerViewModel.MoveBackwardRequested += (sender, e) =>
             {
-                if (this.PlayListView.SelectedIndex < PlayListView.Items.Count )
+                if (this.PlayListView.SelectedIndex < PlayListView.Items.Count && PlayListView.Items.Count>0)
                 {
                     this.PlayListView.SelectedIndex = (this.PlayListView.SelectedIndex - 1 + this.PlayListView.Items.Count) % this.PlayListView.Items.Count;
                     _mediaPlayerViewModel.OnItemSelectedInPlayListCommand.Execute(this.PlayListView.SelectedValue);
@@ -75,9 +84,39 @@ namespace MediaPlayerWindow
                 if (this.PlayButton.Content == FindResource("PauseImage"))
                 {   this.MediaPlayerElement.Pause();
                     this.PlayButton.Content = FindResource("PlayImage");
-                    this.PlayButton.IsChecked = true;
+                  //  this.PlayButton.IsChecked = true;
                 }
                 
+            };
+            _mediaPlayerViewModel.FullScreenEvent += (sender, e) =>
+            {
+                if (this.WindowStyle != WindowStyle.None)
+                {
+                   // this.Visibility = Visibility.Collapsed;
+                    this.WindowStyle = WindowStyle.None;
+                    this.Taskbar.Visibility = System.Windows.Visibility.Collapsed;
+                    this.MovieSliderBar.Visibility = System.Windows.Visibility.Collapsed;
+                    this.MenuBar.Visibility = System.Windows.Visibility.Collapsed;
+                    this.PlayListView.Visibility = System.Windows.Visibility.Collapsed;
+                    this.MediaPlayerElement.Stretch = Stretch.Fill;
+                    this.ResizeMode = ResizeMode.NoResize;
+                    this.WindowState = WindowState.Maximized;
+                    this.Visibility = Visibility.Visible;
+                }
+                else
+                {
+
+                   
+                    this.WindowStyle = WindowStyle.SingleBorderWindow;
+                    this.WindowState = WindowState.Maximized;
+                    this.Taskbar.Visibility = System.Windows.Visibility.Visible;
+                    this.MovieSliderBar.Visibility = System.Windows.Visibility.Visible;
+                    this.MenuBar.Visibility = System.Windows.Visibility.Visible;
+                    this.PlayListView.Visibility = System.Windows.Visibility.Visible;
+                    this.MediaPlayerElement.Stretch = Stretch.None;
+                    this.ResizeMode = ResizeMode.CanResize;
+                   
+                }
             };
             _mediaPlayerViewModel.StopRequested += (sender, e) =>
             {
@@ -126,22 +165,26 @@ namespace MediaPlayerWindow
         private void PlayMethodView()
         {
             this.PlayButton.IsEnabled = true;
-            string[] splittedStrings = this.MediaPlayerElement.Source.ToString().Split('/');
-           this.Title = splittedStrings[splittedStrings.Length-1];
-                if (this.PlayButton.Content==FindResource("PlayImage"))
+            if (this.MediaPlayerElement.Source != null)
+            {
+                string[] splittedStrings = this.MediaPlayerElement.Source.ToString().Split('/');
+                this.Title = splittedStrings[splittedStrings.Length - 1];
+                if (this.PlayButton.Content == FindResource("PlayImage"))
                 {
                     this.MediaPlayerElement.Play();
-                    
+
                     if (this.MediaPlayerElement.HasVideo == false)
                     {
                         /* To be Put later on  */
                     }
                     this.PlayButton.Content = FindResource("PauseImage");
-                    this.PlayButton.IsChecked = false;
-                    
+                    //     this.PlayButton.IsChecked = false;
+                   
+
 
                 }
-               
+            }
+
         }
         void Timer_Tick(object sender, EventArgs e)
         {
@@ -176,9 +219,10 @@ namespace MediaPlayerWindow
 
         private void MediaPlayerElement_OnMediaEnded(object sender, RoutedEventArgs e)
         {
-            if (this.PlayListView.SelectedIndex != -1)
+            
             {
                 this.PlayListView.SelectedIndex = (this.PlayListView.SelectedIndex+1) % this.PlayListView.Items.Count;
+                _mediaPlayerViewModel.ItemSelectedInPlayList(this.PlayListView.SelectedValue);
             }
         }
     }

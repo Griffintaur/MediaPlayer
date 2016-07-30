@@ -8,5 +8,6 @@ namespace MediaPlayerModels
 {
     class FileDetails
     {
+      //  private string title;
     }
 }

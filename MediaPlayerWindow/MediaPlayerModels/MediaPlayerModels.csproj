@@ -40,6 +40,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileDetails.cs" />
     <Compile Include="PlayListClass.cs" />
     <Compile Include="PlayListDirectory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
