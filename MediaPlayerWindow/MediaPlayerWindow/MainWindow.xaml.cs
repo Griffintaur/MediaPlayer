@@ -153,11 +153,12 @@ namespace MediaPlayerWindow
         private void MoviePositionSlider_OnValueChanged(object sender, DragCompletedEventArgs e)
         {
             
-            
+             if (this.MediaPlayerElement.NaturalDuration.HasTimeSpan)
+            {
                 this.MoviePositionSlider.Maximum = this.MediaPlayerElement.NaturalDuration.TimeSpan.TotalSeconds;
                 this.MediaPlayerElement.Position = new TimeSpan(0, 0, (int)this.MoviePositionSlider.Value);  
             
-            
+            }
         }
 
         
