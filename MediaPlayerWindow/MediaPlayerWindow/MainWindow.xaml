@@ -5,9 +5,8 @@
         xmlns:local="clr-namespace:MediaPlayerWindow.Converters"
         Title="Philips Media Player" Height="750" Width="1200" WindowState="Maximized">
     <Window.Background>
-        <ImageBrush ImageSource="images/Wallpaper.jpg"></ImageBrush>
+        <ImageBrush x:Name="brushBack" ImageSource="{Binding ImageUri}"/>
     </Window.Background>
-
     <Window.DataContext>
         <mediaWindow:MediaPlayerMainWindowViewModel />
 
@@ -87,6 +86,9 @@
                 <MenuItem Header="PlayList">
                     <MenuItem Header="OpenPlayList" Command="{Binding OpenPlayListCommand}"></MenuItem>
                     <MenuItem Header="SavePalyList" Command="{Binding SavePlayListCommand}"></MenuItem>
+                </MenuItem>
+                <MenuItem Header="Settings">
+                    <MenuItem Header="ChangeBackground" Command="{Binding ChangeBackgroundCommand}"></MenuItem>
                 </MenuItem>
             </Menu>
         </DockPanel>
