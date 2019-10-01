@@ -9,10 +9,10 @@ using System.Xml;
 namespace MediaPlayerModels
 {
     [DataContract]
-  public  class PlayListDirectory
+    public class PlayListDirectory
     {
-        
-      private  List<PlayListClass> playListCollection=new List<PlayListClass>();
+        private List<PlayListClass> playListCollection = new List<PlayListClass>();
+
         [DataMember]
         public List<PlayListClass> PlayListCollection
         {
