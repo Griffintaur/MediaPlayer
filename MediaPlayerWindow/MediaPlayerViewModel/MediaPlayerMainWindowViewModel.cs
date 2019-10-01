@@ -19,6 +19,7 @@ using MediaPlayerWindow.Commands;
 using System.Windows.Input;
 using Button = System.Windows.Controls.Button;
 using System.Runtime.Serialization;
+
 namespace MediaPlayerViewModel
 {
     public class MediaPlayerMainWindowViewModel:INotifyPropertyChanged
@@ -74,10 +75,11 @@ namespace MediaPlayerViewModel
         public bool PlayRequested
         {
             get { return _playRequested; }
-            set { _playRequested = value; OnPropertyChanged("PlayRequested");
-
+            set
+            {
+                _playRequested = value;
+                OnPropertyChanged("PlayRequested");
             }
-
         }
 
         public bool MediaOpened
@@ -93,17 +95,13 @@ namespace MediaPlayerViewModel
             set
             {
                 _mediaSource = value;
-
                 OnPropertyChanged("MediaSource");
-
             }
         }
-
 
         public ICommand  OpenFileCommand
         {
             get { return new DelegateCommand(OpenFileMethod, IsValid); }
-
         }
 
         public ICommand ShowHidePlayListCommand
@@ -288,7 +286,6 @@ namespace MediaPlayerViewModel
         #region Methods
         private void OpenFileMethod(object obj)
         {
-
             System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
             dialog.Filter =
                  "Audio Files (*.mp3,*.m4a,*.wav,*.aac)|*.mp3|Video Files(*.mp4,*.wmv,*.3gp,*.mkv)|*.mp4|All Files(*.*)|*.*";
@@ -308,10 +305,7 @@ namespace MediaPlayerViewModel
                 {
 
                 }
-
-
             }
-
         }
 
         private void VolumeUpMethod(object o)
@@ -323,6 +317,7 @@ namespace MediaPlayerViewModel
         {
             OnFullScreeEvent();
         }
+
         private void VolumeDownMethod(Object o)
         {
             OnVolumeDownEvent();
@@ -332,14 +327,17 @@ namespace MediaPlayerViewModel
         {
             OnSpeedRatioUpEvent();
         }
+
         private void SpeedRatioDownMethod(object o)
         {
             OnSpeedRatioDownEvent();
         }
+
         private void MediaOpenedMethod(Object obj)
         {
             MediaOpened = true;
         }
+
         private void SavePlaylist(Object obj)
         {
 
@@ -354,7 +352,6 @@ namespace MediaPlayerViewModel
                 {
                     PlayListDirectory playListDirectory=new PlayListDirectory();
 
-
                     List<PlayListClass> _mediaList = new List<PlayListClass>();
                     foreach (Uri file in PlayListViewCollection )
                     {
@@ -362,8 +359,8 @@ namespace MediaPlayerViewModel
                         temp.FileName = file.ToString();
                         temp.Filepath = playlistLookupDictionary[file.ToString()].ToString();
                         _mediaList.Add(temp);
-
                     }
+
                     playListDirectory.PlayListCollection = _mediaList;
                     _xmlSerializer.Serialize(_textWriter, playListDirectory);
                 }
@@ -399,14 +396,7 @@ namespace MediaPlayerViewModel
 
                     }
                 }
-
-
-
-
-
-
             }
-
         }
 
         private void ChangeBackground(Object obj)
@@ -446,13 +436,11 @@ namespace MediaPlayerViewModel
             }
         }
 
-
         private void StopMediaFileMethod(Object Obj)
         {
             OnStopRequested();
             playValue = !playValue;
         }
-
 
         private void MoveForwardMediaFileMethod(Object Obj)
         {
@@ -490,14 +478,12 @@ namespace MediaPlayerViewModel
                     {
 
                     }
-
                 }
             }
         }
 
         private void PlayMediaFileMethod(Object obj)
         {
-
             ToggleButton PlayFileButtonObj = obj as ToggleButton;
             if (obj == null)
             {
@@ -511,8 +497,6 @@ namespace MediaPlayerViewModel
                     OnPauseRequested();
                     playValue = true;
                 }
-
-
             }
             else
             {
@@ -521,13 +505,10 @@ namespace MediaPlayerViewModel
                     if (PlayFileButtonObj.IsChecked.Value)
                     {
                         OnPlayValueRequested();
-
-
                     }
                     else
                     {
                         OnPauseRequested();
-
                     }
                 }
             }
@@ -554,7 +535,6 @@ namespace MediaPlayerViewModel
             }
         }
 
-
         private bool IsValid()
         {
             // if (obj == null) throw new ArgumentNullException("obj");
@@ -562,9 +542,5 @@ namespace MediaPlayerViewModel
         }
 
         #endregion
-
-
-
-
     }
 }
