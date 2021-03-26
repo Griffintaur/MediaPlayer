@@ -1,58 +1,69 @@
-﻿<Window x:Class="MediaPlayerWindow.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:mediaWindow="clr-namespace:MediaPlayerViewModel;assembly=MediaPlayerViewModel"
-        xmlns:local="clr-namespace:MediaPlayerWindow.Converters"
-        Title="Philips Media Player" Height="750" Width="1200" WindowState="Maximized">
+﻿<Window
+    x:Class="MediaPlayerWindow.MainWindow"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:diag="clr-namespace:System.Diagnostics;assembly=WindowsBase"
+    xmlns:local="clr-namespace:MediaPlayerWindow.Converters"
+    xmlns:mediaWindow="clr-namespace:MediaPlayerViewModel;assembly=MediaPlayerViewModel"
+    Title="Philips Media Player"
+    Width="1200"
+    Height="913"
+    WindowState="Normal">
     <Window.Background>
-        <ImageBrush x:Name="brushBack" ImageSource="{Binding ImageUri}"/>
+        <ImageBrush x:Name="brushBack" ImageSource="{Binding ImageUri}" />
     </Window.Background>
     <Window.DataContext>
         <mediaWindow:MediaPlayerMainWindowViewModel />
-
     </Window.DataContext>
-    <!--WindowStyle="None" WindowState="Maximized"-->
+    <!--  WindowStyle="None" WindowState="Maximized"  -->
     <Window.InputBindings>
-        <KeyBinding Key="F" Command="{Binding FullScreenCommand}"></KeyBinding>
-        <KeyBinding Key="OemComma" Command="{Binding SpeedRatioDownEventCommand}"></KeyBinding>
-        <KeyBinding Key="OemPeriod" Command="{Binding SpeedRatioUpEventCommand}"></KeyBinding>
-        <KeyBinding Key="P"  Command="{Binding PlayFileCommand}"   ></KeyBinding>
-        <KeyBinding Key="O"  Command="{Binding OpenFileCommand}"></KeyBinding>
-        <KeyBinding Key="Down" Command="{Binding VolumeDownCommand}"></KeyBinding>
-        <KeyBinding Key="Up" Command="{Binding VolumeUpCommand}"></KeyBinding>
-        <KeyBinding Key="Left" Command="{Binding MoveBackwardFileCommand}"></KeyBinding>
-        <KeyBinding Key="Right" Command="{Binding MoveForwardFileCommand}"></KeyBinding>
-        <KeyBinding Key="S"  Command="{Binding StopFileCommand}"></KeyBinding>
-        <KeyBinding Key="s" Modifiers="Control" Command="{Binding SavePlayListCommand}"></KeyBinding>
-        <KeyBinding Key="o" Modifiers="Control" Command="{Binding OpenPlayListCommand}"></KeyBinding>
-        <KeyBinding Key="A" Command="{Binding PlayListCommand}" CommandParameter="{Binding ElementName=PlayListView}"></KeyBinding>
-        <KeyBinding Key="H" Command="{Binding ShowHidePlayListCommand}"></KeyBinding>
+        <KeyBinding Key="F" Command="{Binding FullScreenCommand}" />
+        <KeyBinding Key="OemComma" Command="{Binding SpeedRatioDownEventCommand}" />
+        <KeyBinding Key="OemPeriod" Command="{Binding SpeedRatioUpEventCommand}" />
+        <KeyBinding Key="P" Command="{Binding PlayFileCommand}" />
+        <KeyBinding Key="O" Command="{Binding OpenFileCommand}" />
+        <KeyBinding Key="Down" Command="{Binding VolumeDownCommand}" />
+        <KeyBinding Key="Up" Command="{Binding VolumeUpCommand}" />
+        <KeyBinding Key="Left" Command="{Binding MoveBackwardFileCommand}" />
+        <KeyBinding Key="Right" Command="{Binding MoveForwardFileCommand}" />
+        <KeyBinding Key="S" Command="{Binding StopFileCommand}" />
+        <KeyBinding
+            Key="s"
+            Command="{Binding SavePlayListCommand}"
+            Modifiers="Control" />
+        <KeyBinding
+            Key="o"
+            Command="{Binding OpenPlayListCommand}"
+            Modifiers="Control" />
+        <KeyBinding
+            Key="A"
+            Command="{Binding PlayListCommand}"
+            CommandParameter="{Binding ElementName=PlayListView}" />
+        <KeyBinding Key="H" Command="{Binding ShowHidePlayListCommand}" />
 
     </Window.InputBindings>
     <Window.Resources>
-        <Image x:Key="PlayImage" Source="images/play.ico"></Image>
-        <Image x:Key="PauseImage" Source="images/Pause.ico"></Image>
-        <Image x:Key="PlayListImage" Source="images/playlist.ico"></Image>
-        <Image x:Key="OpenFileImage" Source="images/Open.ico"></Image>
-        <Image x:Key="MoveForwardImage" Source="images/Forward.ico"></Image>
-        <Image x:Key="MoveBackwardImage" Source="images/backward.ico"></Image>
-        <Image x:Key="StopImage" Source="images/Stop.ico"></Image>
-        <Image x:Key="AddPlaylist" Source="images/AddPlaylist.ico"></Image>
-        <Image x:Key="Albums" Source="images/albums.ico"></Image>
-        <local:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter"></local:TimeSpanToDoubleConverter>
-        <local:DecimalToIntegerConverterForVolume x:Key="DecimalToIntegerConverterForVolume"></local:DecimalToIntegerConverterForVolume>
-        <Image x:Key="VolumeImage" Source="images/Volume.ico"></Image>
-
+        <Image x:Key="PlayImage" Source="images/play.ico" />
+        <Image x:Key="PauseImage" Source="images/Pause.ico" />
+        <Image x:Key="PlayListImage" Source="images/playlist.ico" />
+        <Image x:Key="OpenFileImage" Source="images/Open.ico" />
+        <Image x:Key="MoveForwardImage" Source="images/Forward.ico" />
+        <Image x:Key="MoveBackwardImage" Source="images/backward.ico" />
+        <Image x:Key="StopImage" Source="images/Stop.ico" />
+        <Image x:Key="AddPlaylist" Source="images/AddPlaylist.ico" />
+        <Image x:Key="Albums" Source="images/albums.ico" />
+        <local:TimeSpanToDoubleConverter x:Key="TimeSpanToDoubleConverter" />
+        <local:DecimalToIntegerConverterForVolume x:Key="DecimalToIntegerConverterForVolume" />
+        <Image x:Key="VolumeImage" Source="images/Volume.ico" />
+        <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
 
         <Style x:Key="ButtonStyle" TargetType="Button">
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Button}">
                         <Grid>
-                            <Ellipse Fill="{TemplateBinding Background}"
-                             Stroke="{TemplateBinding BorderBrush}"/>
-                            <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                            <Ellipse Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -63,10 +74,8 @@
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                         <Grid>
-                            <Ellipse Fill="{TemplateBinding Background}"
-                             Stroke="{TemplateBinding BorderBrush}"/>
-                            <ContentPresenter HorizontalAlignment="Center"
-                                          VerticalAlignment="Center"/>
+                            <Ellipse Fill="{TemplateBinding Background}" Stroke="{TemplateBinding BorderBrush}" />
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
                         </Grid>
                     </ControlTemplate>
                 </Setter.Value>
@@ -74,47 +83,63 @@
         </Style>
     </Window.Resources>
 
-    <Grid >
+    <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"  ></RowDefinition>
-            <RowDefinition Height="320*"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-            <RowDefinition Height="Auto"></RowDefinition>
-        </Grid.RowDefinitions >
-        <DockPanel Grid.Row="0" Height="20" Name="MenuBar">
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" MinHeight="90" />
+            <RowDefinition Height="Auto" MinHeight="105" />
+        </Grid.RowDefinitions>
+        <DockPanel Name="MenuBar" Grid.Row="0">
             <Menu DockPanel.Dock="Top">
                 <MenuItem Header="PlayList">
-                    <MenuItem Header="OpenPlayList" Command="{Binding OpenPlayListCommand}"></MenuItem>
-                    <MenuItem Header="SavePalyList" Command="{Binding SavePlayListCommand}"></MenuItem>
+                    <MenuItem Command="{Binding OpenPlayListCommand}" Header="OpenPlayList" />
+                    <MenuItem Command="{Binding SavePlayListCommand}" Header="SavePalyList" />
                 </MenuItem>
                 <MenuItem Header="Settings">
-                    <MenuItem Header="ChangeBackground" Command="{Binding ChangeBackgroundCommand}"></MenuItem>
+                    <MenuItem Command="{Binding ChangeBackgroundCommand}" Header="ChangeBackground" />
                 </MenuItem>
             </Menu>
         </DockPanel>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="0"></ColumnDefinition>
-                <ColumnDefinition Width="*"></ColumnDefinition>
-                <ColumnDefinition Width="Auto" MaxWidth="300" ></ColumnDefinition>
+                <ColumnDefinition Width="0" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" MaxWidth="300" />
             </Grid.ColumnDefinitions>
-            <Viewbox Grid.Column="1" >
-                <MediaElement Name="MediaPlayerElement" MediaOpened="MediaPlayerElement_OnMediaOpened"  LoadedBehavior ="Manual" Source="{Binding MediaSource, Mode=TwoWay}"    HorizontalAlignment="Center"  VerticalAlignment="Center" MediaEnded="MediaPlayerElement_OnMediaEnded"  >
-                   
-                </MediaElement>
+            <Viewbox Grid.Column="1">
+                <MediaElement
+                    Name="MediaPlayerElement"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    LoadedBehavior="Manual"
+                    MediaEnded="MediaPlayerElement_OnMediaEnded"
+                    MediaOpened="MediaPlayerElement_OnMediaOpened"
+                    Source="{Binding MediaSource, Mode=TwoWay}" />
             </Viewbox>
-            <ListBox Name="PlayListView" IsSynchronizedWithCurrentItem="True" Foreground="Black" FontSize="14" FontWeight="Bold" SelectedIndex="{Binding PlayListViewCollection}"  Visibility="{Binding ListVisibility, Mode=TwoWay}" Grid.Column="2" ItemsSource="{Binding Path=PlayListViewCollection}"   >
+            <ListBox
+                Name="PlayListView"
+                Grid.Column="2"
+                FontSize="14"
+                FontWeight="Bold"
+                Foreground="Black"
+                ItemsSource="{Binding Path=PlayListViewCollection}"
+                SelectedIndex="{Binding PlayListViewCollection}"
+                Visibility="{Binding ListVisibility, Mode=TwoWay}">
                 <ListBox.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF92C3EC" Offset="0"/>
-                        <GradientStop Color="#FF7E8DEA" Offset="1"/>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0" Color="#FF92C3EC" />
+                        <GradientStop Offset="1" Color="#FF7E8DEA" />
                     </LinearGradientBrush>
                 </ListBox.Background>
-                <ListBox.ItemTemplate >
+                <ListBox.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding}">
                             <TextBlock.InputBindings>
-                                <MouseBinding MouseAction="LeftClick" Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.OnItemSelectedInPlayListCommand}" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TextBlock},Path=Text}"></MouseBinding>
+                                <MouseBinding
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=Window}, Path=DataContext.OnItemSelectedInPlayListCommand}"
+                                    CommandParameter="{Binding RelativeSource={RelativeSource AncestorType=TextBlock}, Path=Text}"
+                                    MouseAction="LeftClick" />
                             </TextBlock.InputBindings>
                         </TextBlock>
                     </DataTemplate>
@@ -122,80 +147,213 @@
             </ListBox>
             <!--<TreeView Name="AlbumsView" ItemSource="{Binding }" ItemTemplate="{StaticResource }"></TreeView>-->
         </Grid>
-        <Border Grid.Row="2" BorderBrush="Black" Padding="8" Name="MovieSliderBar" >
+        <Border
+            Name="MovieSliderBar"
+            Grid.Row="2"
+            Padding="8"
+            BorderBrush="Black">
             <Border.Background>
-                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                    <GradientStop Color="#FF467EE0" Offset="0"/>
-                    <GradientStop Color="#FFA5BBDA" Offset="1"/>
+                <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                    <GradientStop Offset="0" Color="#FF467EE0" />
+                    <GradientStop Offset="1" Color="#FFA5BBDA" />
                 </LinearGradientBrush>
             </Border.Background>
             <StackPanel Orientation="Vertical">
-            <Slider  Name="MoviePositionSlider" ToolTip="Drag to get Desired Position in Media" Thumb.DragCompleted="MoviePositionSlider_OnValueChanged"  LargeChange="0" Focusable="False"      Minimum="0" 
-                 Grid.RowSpan="1"   Height="30" IsMoveToPointEnabled="True" TickPlacement="BottomRight" TickFrequency="10" >
-            </Slider>
-                <StackPanel Orientation="Horizontal" Name="MovieTimeBar">
+
+                <Slider
+                    Name="MoviePositionSlider"
+                    Grid.RowSpan="1"
+                    Height="30"
+                    Focusable="False"
+                    IsMoveToPointEnabled="True"
+                    LargeChange="0"
+                    Minimum="0"
+                    PreviewMouseUp="MoviePositionSlider_OnValueChanged"
+                    Thumb.DragCompleted="MoviePositionSlider_OnValueChanged"
+                    TickFrequency="10"
+                    TickPlacement="BottomRight"
+                    ToolTip="Drag to get Desired Position in Media" />
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*" ></ColumnDefinition>
-                            <ColumnDefinition Width="Auto"></ColumnDefinition>
-                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="auto" />
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="auto" />
                         </Grid.ColumnDefinitions>
-                   <Label Grid.Column="0" Name="Timer"  Height="30" FontWeight="Bold" FontSize="16" ></Label>
-                        <Label Grid.Column="1"  Content="/" Height="30" FontWeight="Bold" Foreground="Black"></Label>
-                        <Label Grid.Column="2" Name="TimeToComplete"  Height="30" FontWeight="Bold" FontSize="16" HorizontalContentAlignment="Right"></Label>
+                        <StackPanel
+                            x:Name="stackPanelTimer"
+                            Grid.Column="0"
+                            Orientation="Horizontal">
+                            <Label
+                                Name="Timer"
+                                Height="30"
+                                FontSize="16"
+                                FontWeight="Bold" />
+                            <Label
+                                Height="30"
+                                Content="/"
+                                FontWeight="Bold"
+                                Foreground="Black" />
+                            <Label
+                                Name="TimeToComplete"
+                                Height="30"
+                                HorizontalContentAlignment="Right"
+                                FontSize="16"
+                                FontWeight="Bold" />
+                        </StackPanel>
                     </Grid>
-                </StackPanel>
+                    <Grid Grid.Row="1">
+                        <TextBlock
+                            Grid.Row="1"
+                            Grid.Column="0"
+                            HorizontalAlignment="Center"
+                            Background="Black"
+                            Foreground="White"
+                            Text="{Binding Alert}"
+                            Visibility="Visible" />
+                    </Grid>
+                </Grid>
             </StackPanel>
         </Border>
-        <Border Name="Taskbar" CornerRadius="6" Grid.Row="3"
-                BorderBrush="Black" Padding="8" Background="#FF5D81E2">
-            <StackPanel   Width="900" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center" Height="45" >
+        <Border
+            Name="Taskbar"
+            Grid.Row="3"
+            Padding="8"
+            Background="#FF5D81E2"
+            BorderBrush="Black"
+            CornerRadius="6">
+            <StackPanel
+                Width="900"
+                Height="85"
+                Margin="138,2"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Orientation="Horizontal">
                 <StackPanel.Background>
-                    <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-                        <GradientStop Color="#FF467EE0" Offset="0"/>
-                        <GradientStop Color="#FFA5BBDA" Offset="1"/>
+                    <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                        <GradientStop Offset="0" Color="#FF467EE0" />
+                        <GradientStop Offset="1" Color="#FFA5BBDA" />
                     </LinearGradientBrush>
                 </StackPanel.Background>
+                <StackPanel
+                    Width="200"
+                    Height="60"
+                    Orientation="Horizontal">
+                    <Label
+                        Width="40"
+                        Height="40"
+                        Content="{StaticResource VolumeImage}" />
+                    <Slider
+                        Name="VolumeSlider"
+                        Width="100"
+                        VerticalAlignment="Center"
+                        IsMoveToPointEnabled="True"
+                        Maximum="1"
+                        Minimum="0"
+                        ToolTip="Volume Slider"
+                        Value="{Binding ElementName=MediaPlayerElement, Mode=TwoWay, Path=Volume}" />
+                    <Label
+                        Width="40"
+                        Height="40"
+                        Content="{Binding ElementName=VolumeSlider, Path=Value}"
+                        FontSize="14"
+                        FontWeight="Bold"
+                        Foreground="Black" />
+                </StackPanel>
+                <StackPanel Width="60" Height="50">
+                    <Button
+                        Name="MoveBackwardButton"
+                        Width="45"
+                        Command="{Binding MoveBackwardFileCommand}"
+                        Content="{StaticResource MoveBackwardImage}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip=" Play Previous " />
+                </StackPanel>
+                <StackPanel Width="60" Height="50">
+                    <ToggleButton
+                        Name="PlayButton"
+                        Width="45"
+                        ClickMode="Press"
+                        Command="{Binding PlayFileCommand}"
+                        CommandParameter="{Binding ElementName=PlayButton}"
+                        Content="{DynamicResource PlayImage}"
+                        IsEnabled="True"
+                        IsThreeState="False"
+                        Style="{StaticResource ToggleButtonStyle}"
+                        ToolTip="Stop/Play Song">
+                        <ToggleButton.InputBindings>
+                            <KeyBinding Gesture="ALt+l" />
+                        </ToggleButton.InputBindings>
+                    </ToggleButton>
+                </StackPanel>
+                <StackPanel Width="60" Height="50">
+                    <Button
+                        Name="MoveForwardButton"
+                        Width="45"
+                        Background="Red"
+                        Command="{Binding MoveForwardFileCommand}"
+                        Content="{StaticResource MoveForwardImage}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="Play Next Song" />
+                </StackPanel>
+                <StackPanel Width="60" Height="50">
+                    <Button
+                        Name="StopButton"
+                        Width="45"
+                        Command="{Binding StopFileCommand}"
+                        Content="{StaticResource StopImage}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="Stop" />
+                </StackPanel>
+                <StackPanel Width="60" Height="50">
+                    <Button
+                        Name="OpenFileButton"
+                        Width="45"
+                        HorizontalAlignment="Center"
+                        Command="{Binding OpenFileCommand}"
+                        Content="{StaticResource OpenFileImage}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="OpenFile To Play" />
+                </StackPanel>
+                <StackPanel Width="60" Height="50">
+                    <Button
+                        Name="AddPlayList"
+                        Width="40"
+                        Command="{Binding PlayListCommand}"
+                        Content="{StaticResource AddPlaylist}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="Add Songs To PlayList" />
+                </StackPanel>
+                <StackPanel Width="190" Height="50" />
+                <StackPanel Width="60" Height="50">
+                    <Button
+                        Name="HideShowPlaylist"
+                        Width="40"
+                        Command="{Binding ShowHidePlayListCommand}"
+                        CommandParameter="{Binding ElementName=PlayListView}"
+                        Content="{StaticResource PlayListImage}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="Show/Hide Playlist" />
+                </StackPanel>
+                <StackPanel
+                    Width="60"
+                    Height="50"
+                    Margin="0,0,0,17"
+                    VerticalAlignment="Bottom">
+                    <Button
+                        Name="Albums"
+                        Width="40"
+                        Command="{Binding OpenPlayListCommand}"
+                        Content="{StaticResource Albums}"
+                        Style="{StaticResource ButtonStyle}"
+                        ToolTip="OpenPlayList" />
+                </StackPanel>
+            </StackPanel>
 
-                <StackPanel Width="200" Height="50" Orientation="Horizontal">
-                    <Label  Width ="40" Height="40" Content="{StaticResource VolumeImage}"></Label>
-                    <Slider Name="VolumeSlider" ToolTip="Volume Slider" VerticalAlignment="Center" IsMoveToPointEnabled="True"  Maximum="1" Minimum="0" Width="100" Value="{Binding ElementName=MediaPlayerElement, Mode=TwoWay , Path=Volume}"></Slider>
-                    <Label Width="40" Height="40" Content="{Binding ElementName=VolumeSlider,Path=Value}" Foreground="Black" FontSize="14" FontWeight="Bold"></Label>
-                </StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="MoveBackwardButton" ToolTip=" Play Previous " Width="45" Style="{StaticResource ButtonStyle }" Command="{Binding MoveBackwardFileCommand}" Content="{StaticResource MoveBackwardImage}"></Button>
-                </StackPanel>
-                <!--<Button Name="PlayButton"  Content="{DynamicResource PlayImage}"  Command="{Binding PlayFileCommand}"  HorizontalAlignment="Center"   Width="75" CommandParameter="{Binding ElementName=OpenFileButton}" CommandTarget="{
-                 Binding  ElementName=MediaPlayerElement}"/>-->
-                <StackPanel Width="60" Height="40">
-                    <ToggleButton Name="PlayButton" ToolTip="Stop/Play Song" Width="45" Style="{StaticResource ToggleButtonStyle }" IsEnabled="True" Content="{DynamicResource PlayImage}" Command="{Binding PlayFileCommand}" CommandParameter="{Binding ElementName=PlayButton}"  IsThreeState="False" ClickMode="Press" >
-                    <ToggleButton.InputBindings>
-                        <KeyBinding Gesture="ALt+l"></KeyBinding>
-                    </ToggleButton.InputBindings>
-                    </ToggleButton> 
-                    </StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="MoveForwardButton" ToolTip="Play Next Song" Style="{StaticResource ButtonStyle }" Width="45"  Background="Red"  Command="{Binding MoveForwardFileCommand}" Content="{StaticResource MoveForwardImage}"></Button>
-                </StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="StopButton"  ToolTip="Stop" Width="45" Style="{StaticResource ButtonStyle }" Command="{Binding StopFileCommand}" Content="{StaticResource StopImage}"></Button>
-                </StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="OpenFileButton" ToolTip="OpenFile To Play" Width="45" Style="{StaticResource ButtonStyle }" Content="{StaticResource OpenFileImage}" Command="{Binding OpenFileCommand}" HorizontalAlignment="Center"  />
-                </StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="AddPlayList" ToolTip="Add Songs To PlayList" Width="40" Style="{StaticResource ButtonStyle }" Command="{Binding PlayListCommand}" Content="{StaticResource AddPlaylist}"></Button>
-                </StackPanel>
-                <StackPanel Height="40" Width="190"></StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="HideShowPlaylist" ToolTip="Show/Hide Playlist" Style="{StaticResource ButtonStyle }" Width="40" Command="{Binding ShowHidePlayListCommand}" CommandParameter="{Binding ElementName=PlayListView}" Content="{StaticResource PlayListImage}"   >
-                    </Button>
-                </StackPanel>
-                <StackPanel Width="60" Height="40">
-                    <Button Name="Albums"  Width="40" ToolTip="OpenPlayList" Style="{StaticResource ButtonStyle }" Command="{Binding OpenPlayListCommand}" Content="{StaticResource Albums}"></Button>
-                </StackPanel>
-                </StackPanel>
-            
         </Border>
 
     </Grid>
