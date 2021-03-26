@@ -1,36 +1,27 @@
-﻿using System;
+﻿using MediaPlayerModels;
+using MediaPlayerWindow.Commands;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Forms;
-using System.Xml.Serialization;
-using MediaPlayerModels;
-using MediaPlayerViewModel.Annotations;
-using MediaPlayerWindow.Commands;
 using System.Windows.Input;
-using Button = System.Windows.Controls.Button;
-using System.Runtime.Serialization;
+using System.Xml.Serialization;
 namespace MediaPlayerViewModel
 {
-    public class MediaPlayerMainWindowViewModel:INotifyPropertyChanged
+    public class MediaPlayerMainWindowViewModel : INotifyPropertyChanged
     {
         private Uri _mediaSource;
-        private bool _playRequested=false;
+        private bool _playRequested = false;
         private bool _mediaOpened = false;
         private bool playValue = false;
         private System.Windows.Visibility listVisibility;
-        private Dictionary<string, Uri> playlistLookupDictionary=new Dictionary<string, Uri>();
+        private Dictionary<string, Uri> playlistLookupDictionary = new Dictionary<string, Uri>();
         // private  ObservableCollection<Uri> folder=new ObservableCollection<Uri>(); 
-        private ObservableCollection<Uri> playListViewCollection=new ObservableCollection<Uri>();
+        private ObservableCollection<Uri> playListViewCollection = new ObservableCollection<Uri>();
         private ObservableCollection<ObservableCollection<Uri>> albumsViewCollection = new ObservableCollection<ObservableCollection<Uri>>();
         public string ImageUri { get; set; }
 
@@ -45,10 +36,24 @@ namespace MediaPlayerViewModel
             set { playListViewCollection = value; }
         }
 
+        private string _alert;
+        public string Alert
+        {
+            get { return _alert; }
+            set
+            {
+                _alert = value;
+                OnPropertyChanged(nameof(Alert));
+                OnPropertyChanged(nameof(HasAlert));
+            }
+        }
+
+        public bool HasAlert => !string.IsNullOrWhiteSpace(Alert);
+
         public System.Windows.Visibility ListVisibility
         {
             get { return listVisibility; }
-            set { listVisibility = value;OnPropertyChanged("ListVisibility"); }
+            set { listVisibility = value; OnPropertyChanged("ListVisibility"); }
         }
         //public event PlayRequestedValueChanged;
         public event EventHandler PlayValueRequested;
@@ -74,16 +79,16 @@ namespace MediaPlayerViewModel
         public bool PlayRequested
         {
             get { return _playRequested; }
-            set { _playRequested = value; OnPropertyChanged("PlayRequested");
-
+            set
+            {
+                _playRequested = value; OnPropertyChanged("PlayRequested");
             }
-
         }
 
         public bool MediaOpened
         {
             get { return _mediaOpened; }
-            set { _mediaOpened = value;OnMediaOpenedRequested(); }
+            set { _mediaOpened = value; OnMediaOpenedRequested(); }
         }
 
         #region label
@@ -95,89 +100,87 @@ namespace MediaPlayerViewModel
                 _mediaSource = value;
 
                 OnPropertyChanged("MediaSource");
-
             }
         }
 
-
-        public ICommand  OpenFileCommand
+        public ICommand OpenFileCommand
         {
-            get { return new DelegateCommand(OpenFileMethod, IsValid); }
+            get { return new DelegateCommand(OpenFileMethod, IsValid, this); }
 
         }
 
         public ICommand ShowHidePlayListCommand
         {
-            get { return new DelegateCommand(ShowHidePlayListMethod,IsValid);}
+            get { return new DelegateCommand(ShowHidePlayListMethod, IsValid, this); }
         }
 
         public ICommand PlayFileCommand
         {
-            get { return new DelegateCommand(PlayMediaFileMethod,IsValid);}
+            get { return new DelegateCommand(PlayMediaFileMethod, IsValid, this); }
         }
 
         public ICommand SpeedRatioUpEventCommand
         {
-            get { return new DelegateCommand(SpeedRatioUpMethod,IsValid);}
+            get { return new DelegateCommand(SpeedRatioUpMethod, IsValid, this); }
         }
 
         public ICommand SpeedRatioDownEventCommand
         {
-            get { return new DelegateCommand(SpeedRatioDownMethod,IsValid);}
+            get { return new DelegateCommand(SpeedRatioDownMethod, IsValid, this); }
         }
 
         public ICommand VolumeUpCommand
         {
-            get { return new DelegateCommand(VolumeUpMethod,IsValid);}
+            get { return new DelegateCommand(VolumeUpMethod, IsValid, this); }
         }
 
         public ICommand VolumeDownCommand
         {
-            get { return new DelegateCommand(VolumeDownMethod,IsValid);}
+            get { return new DelegateCommand(VolumeDownMethod, IsValid, this); }
         }
         public ICommand PlayListCommand
         {
-            get { return new DelegateCommand(PlayListMethod,IsValid);}
+            get { return new DelegateCommand(PlayListMethod, IsValid, this); }
         }
 
         public ICommand FullScreenCommand
         {
-            get { return new DelegateCommand(FullScreenMethod,IsValid);}
+            get { return new DelegateCommand(FullScreenMethod, IsValid, this); }
         }
 
         public ICommand OnItemSelectedInPlayListCommand
         {
-            get { return new DelegateCommand(ItemSelectedInPlayList,IsValid);}
+            get { return new DelegateCommand(ItemSelectedInPlayList, IsValid, this); }
         }
         public ICommand StopFileCommand
         {
-            get { return new DelegateCommand(StopMediaFileMethod, IsValid); }
+            get { return new DelegateCommand(StopMediaFileMethod, IsValid, this); }
         }
 
         public ICommand SavePlayListCommand
         {
-            get { return new DelegateCommand(SavePlaylist,IsValid);}
+            get { return new DelegateCommand(SavePlaylist, IsValid, this); }
         }
 
         public ICommand MediaOpenedCommand
         {
-            get { return new DelegateCommand(MediaOpenedMethod,IsValid);}
+            get { return new DelegateCommand(MediaOpenedMethod, IsValid, this); }
         }
         public ICommand OpenPlayListCommand
         {
-            get { return new DelegateCommand(OpenPlayList,IsValid);}
+            get { return new DelegateCommand(OpenPlayList, IsValid, this); }
         }
         public ICommand ChangeBackgroundCommand
         {
-            get { return new DelegateCommand(ChangeBackground, IsValid); }
+            get { return new DelegateCommand(ChangeBackground, IsValid, this); }
         }
         public ICommand MoveForwardFileCommand
         {
-            get { return new DelegateCommand(MoveForwardMediaFileMethod, IsValid); }
+            get { return new DelegateCommand(MoveForwardMediaFileMethod, IsValid, this); }
         }
         public ICommand MoveBackwardFileCommand
         {
-            get { return new DelegateCommand(MoveBackwardMediaFileMethod, IsValid); }
+            get { return new DelegateCommand(MoveBackwardMediaFileMethod, IsValid, this); }
         }
 
 
@@ -197,7 +200,7 @@ namespace MediaPlayerViewModel
         {
             if (PauseRequested != null)
             {
-                this.PauseRequested(this,new EventArgs());
+                this.PauseRequested(this, new EventArgs());
             }
         }
         protected virtual void OnPlayValueRequested()
@@ -228,7 +231,7 @@ namespace MediaPlayerViewModel
         {
             if (VolumeUpEvent != null)
             {
-                this.VolumeUpEvent(this,new EventArgs());
+                this.VolumeUpEvent(this, new EventArgs());
             }
         }
 
@@ -236,7 +239,7 @@ namespace MediaPlayerViewModel
         {
             if (SpeedRatioUpEvent != null)
             {
-                this.SpeedRatioUpEvent(this,new EventArgs());
+                this.SpeedRatioUpEvent(this, new EventArgs());
             }
         }
         protected virtual void OnSpeedRatioDownEvent()
@@ -251,14 +254,14 @@ namespace MediaPlayerViewModel
         {
             if (VolumeDownEvent != null)
             {
-                this.VolumeDownEvent(this,new EventArgs());
+                this.VolumeDownEvent(this, new EventArgs());
             }
         }
         protected virtual void OnMediaOpenedRequested()
         {
             if (MediaOpenedRequested != null)
             {
-                this.MediaOpenedRequested(this,new EventArgs());
+                this.MediaOpenedRequested(this, new EventArgs());
             }
         }
         protected virtual void OnStopRequested()
@@ -286,33 +289,6 @@ namespace MediaPlayerViewModel
         #endregion
 
         #region Methods
-        private void OpenFileMethod(object obj)
-        {
-
-            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.Filter =
-                 "Audio Files (*.mp3,*.m4a,*.wav,*.aac)|*.mp3|Video Files(*.mp4,*.wmv,*.3gp,*.mkv)|*.mp4|All Files(*.*)|*.*";
-            dialog.FilterIndex = 2;
-            // MediaPlayerButtonObj = obj as MediaElement;
-
-            System.Windows.Forms.DialogResult dialogResult = dialog.ShowDialog();
-            if (dialogResult == System.Windows.Forms.DialogResult.OK)
-            {
-                MediaSource = new Uri(dialog.FileName);
-                try
-                {
-                    playlistLookupDictionary.Add(dialog.SafeFileName, MediaSource);
-                    PlayListViewCollection.Add(new Uri(dialog.SafeFileName, UriKind.Relative));
-                }
-                catch (Exception e)
-                {
-
-                }
-
-
-            }
-
-        }
 
         private void VolumeUpMethod(object o)
         {
@@ -323,7 +299,7 @@ namespace MediaPlayerViewModel
         {
             OnFullScreeEvent();
         }
-        private void VolumeDownMethod(Object o)
+        private void VolumeDownMethod(object o)
         {
             OnVolumeDownEvent();
         }
@@ -336,15 +312,15 @@ namespace MediaPlayerViewModel
         {
             OnSpeedRatioDownEvent();
         }
-        private void MediaOpenedMethod(Object obj)
+        private void MediaOpenedMethod(object obj)
         {
             MediaOpened = true;
         }
-        private void SavePlaylist(Object obj)
+        private void SavePlaylist(object obj)
         {
 
             XmlSerializer _xmlSerializer = new XmlSerializer(typeof(PlayListDirectory));
-            SaveFileDialog _playListSaveDialog=new SaveFileDialog();
+            SaveFileDialog _playListSaveDialog = new SaveFileDialog();
             _playListSaveDialog.Filter = "xml files(*.xml)|*.xml";
             _playListSaveDialog.Title = "Save PlayList";
             if (_playListSaveDialog.ShowDialog() == DialogResult.OK)
@@ -352,11 +328,10 @@ namespace MediaPlayerViewModel
                 string filename = _playListSaveDialog.FileName;
                 using (TextWriter _textWriter = new StreamWriter(filename))
                 {
-                    PlayListDirectory playListDirectory=new PlayListDirectory();
-
+                    PlayListDirectory playListDirectory = new PlayListDirectory();
 
                     List<PlayListClass> _mediaList = new List<PlayListClass>();
-                    foreach (Uri file in PlayListViewCollection )
+                    foreach (Uri file in PlayListViewCollection)
                     {
                         PlayListClass temp = new PlayListClass();
                         temp.FileName = file.ToString();
@@ -371,45 +346,59 @@ namespace MediaPlayerViewModel
 
         }
 
-        private void OpenPlayList(Object obj)
+        private void OpenPlayList(object obj)
         {
             // playlistLookupDictionary.Clear();
             // playListViewCollection.Clear();
-            XmlSerializer _xmlDeSerializer=new XmlSerializer(typeof(PlayListDirectory));
-            OpenFileDialog _playListOpenFileDialog=new OpenFileDialog();
+            XmlSerializer _xmlDeSerializer = new XmlSerializer(typeof(PlayListDirectory));
+            OpenFileDialog _playListOpenFileDialog = new OpenFileDialog();
             _playListOpenFileDialog.Filter = "xml files(*.xml)|*.xml";
             _playListOpenFileDialog.Title = "Open PlayList";
+
             if (_playListOpenFileDialog.ShowDialog() == DialogResult.OK)
             {
                 string filename = _playListOpenFileDialog.FileName;
-                TextReader _textReader=new StreamReader(filename);
-                Object xmlObject =_xmlDeSerializer.Deserialize(_textReader);
-                PlayListDirectory xmlDataCollection = (PlayListDirectory) xmlObject;
+                TextReader _textReader = new StreamReader(filename);
+                object xmlObject = _xmlDeSerializer.Deserialize(_textReader);
+                PlayListDirectory xmlDataCollection = (PlayListDirectory)xmlObject;
                 _textReader.Close();
                 foreach (PlayListClass tempList in xmlDataCollection.PlayListCollection)
                 {
-                    try
-                    {
-                        playlistLookupDictionary.Add(tempList.FileName, new Uri(tempList.Filepath, UriKind.Absolute));
-                        playListViewCollection.Add(new Uri(tempList.FileName, UriKind.Relative));
-                        MediaSource = new Uri(tempList.Filepath,UriKind.Absolute);
-                    }
-                    catch(Exception e)
-                    {
+                    playlistLookupDictionary.Add(tempList.FileName, new Uri(tempList.Filepath, UriKind.Absolute));
+                    playListViewCollection.Add(new Uri(tempList.FileName, UriKind.Relative));
+                    MediaSource = new Uri(tempList.Filepath, UriKind.Absolute);
 
-                    }
                 }
-
-
-
-
-
-
             }
-
         }
 
-        private void ChangeBackground(Object obj)
+        private void OpenFileMethod(object obj)
+        {
+
+            OpenFileDialog dialog = new OpenFileDialog();
+            dialog.Filter = "Audio Files (*.mp3,*.m4a,*.wav,*.aac)|*.mp3|Video Files(*.mp4,*.wmv,*.3gp,*.mkv)|*.mp4|All Files(*.*)|*.*";
+            dialog.FilterIndex = 1;
+            dialog.Multiselect = true;
+            // MediaPlayerButtonObj = obj as MediaElement;
+
+            DialogResult dialogResult = dialog.ShowDialog();
+            if (dialogResult == DialogResult.OK)
+            {
+                foreach (var filesName in dialog.SafeFileNames)
+                {
+                    if (playlistLookupDictionary.ContainsKey(filesName))
+                    {
+
+                    }
+                    playlistLookupDictionary.Add(filesName, MediaSource);
+                    PlayListViewCollection.Add(new Uri(filesName, UriKind.Relative));
+                }
+                MediaSource = new Uri(dialog.FileName);
+            }
+        }
+
+
+        private void ChangeBackground(object obj)
         {
             OpenFileDialog _backgroundOpenFileDialog = new OpenFileDialog();
             _backgroundOpenFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
@@ -426,76 +415,59 @@ namespace MediaPlayerViewModel
             }
         }
 
-        private void ShowHidePlayListMethod(Object obj)
+        private void ShowHidePlayListMethod(object obj)
         {
-            try
+            System.Windows.Controls.ListBox _list = obj as System.Windows.Controls.ListBox;
+            if (ListVisibility == System.Windows.Visibility.Visible)
             {
-                System.Windows.Controls.ListBox _list = obj as System.Windows.Controls.ListBox;
-                if (ListVisibility == System.Windows.Visibility.Visible)
-                {
-                    ListVisibility = System.Windows.Visibility.Collapsed;
-                }
-                else
-                {
-                    ListVisibility = System.Windows.Visibility.Visible;
-                }
+                ListVisibility = System.Windows.Visibility.Collapsed;
             }
-            catch (Exception e)
+            else
             {
-
+                ListVisibility = System.Windows.Visibility.Visible;
             }
         }
 
-
-        private void StopMediaFileMethod(Object Obj)
+        private void StopMediaFileMethod(object Obj)
         {
             OnStopRequested();
             playValue = !playValue;
         }
 
 
-        private void MoveForwardMediaFileMethod(Object Obj)
+        private void MoveForwardMediaFileMethod(object Obj)
         {
             OnMoveForwardRequested();
         }
 
-        private void MoveBackwardMediaFileMethod(Object obj)
+        private void MoveBackwardMediaFileMethod(object obj)
         {
             OnMoveBackwardRequested();
         }
-        private void PlayListMethod(Object obj)
+        private void PlayListMethod(object obj)
         {
-            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog();
-            dialog.Multiselect = true;
+            OpenFileDialog dialog = new OpenFileDialog();
             dialog.Filter =
                  "Audio Files (*.mp3,*.m4a,*.wav,*.aac)|*.mp3|Video Files(*.mp4,*.wmv,*.3gp,*.mkv)|*.mp4|All Files(*.*)|*.*";
-            dialog.FilterIndex = 2;
+            dialog.FilterIndex = 1;
             // MediaPlayerButtonObj = obj as MediaElement;
             dialog.Title = "Add Media Files To PlayList";
-            System.Windows.Forms.DialogResult dialogResult = dialog.ShowDialog();
+            DialogResult dialogResult = dialog.ShowDialog();
 
-            if (dialogResult == System.Windows.Forms.DialogResult.OK)
+            if (dialogResult == DialogResult.OK)
             {
                 int count_files = 0;
                 foreach (string file in dialog.FileNames)
                 {
-                    try
-                    {
-                        MediaSource = new Uri(file);
-                        playlistLookupDictionary.Add(dialog.SafeFileNames[count_files], MediaSource);
-                        PlayListViewCollection.Add(new Uri(dialog.SafeFileNames[count_files], UriKind.Relative));
-                        count_files ++;
-                    }
-                    catch(Exception e)
-                    {
-
-                    }
-
+                    MediaSource = new Uri(file);
+                    playlistLookupDictionary.Add(dialog.SafeFileNames[count_files], MediaSource);
+                    PlayListViewCollection.Add(new Uri(dialog.SafeFileNames[count_files], UriKind.Relative));
+                    count_files++;
                 }
             }
         }
 
-        private void PlayMediaFileMethod(Object obj)
+        private void PlayMediaFileMethod(object obj)
         {
 
             ToggleButton PlayFileButtonObj = obj as ToggleButton;
@@ -511,8 +483,6 @@ namespace MediaPlayerViewModel
                     OnPauseRequested();
                     playValue = true;
                 }
-
-
             }
             else
             {
@@ -521,13 +491,10 @@ namespace MediaPlayerViewModel
                     if (PlayFileButtonObj.IsChecked.Value)
                     {
                         OnPlayValueRequested();
-
-
                     }
                     else
                     {
                         OnPauseRequested();
-
                     }
                 }
             }
@@ -546,8 +513,8 @@ namespace MediaPlayerViewModel
 
         private void AlbumsCreateMethod()
         {
-            System.Windows.Forms.FolderBrowserDialog folderBrowserControl = new System.Windows.Forms.FolderBrowserDialog();
-            System.Windows.Forms.DialogResult result = folderBrowserControl.ShowDialog();
+            FolderBrowserDialog folderBrowserControl = new FolderBrowserDialog();
+            DialogResult result = folderBrowserControl.ShowDialog();
             if (result == DialogResult.OK)
             {
 
